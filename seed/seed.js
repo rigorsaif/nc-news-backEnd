@@ -13,13 +13,11 @@ const seedDB = (topicsData, usersData, articleData, commentData) => {
     .then(([topics, users]) => {
       return Promise.all([
         Article.insertMany(getArticlesData(users, articleData)),
-        users
+        users, topics
       ]);
     })
-    .then(([articleData, users]) => {
-      return Comment.insertMany(
-        getCommentsData(articleData, users, commentData)
-      );
+    .then(([articleData, users, topics]) => {
+      return Promise.all([Comment.insertMany(getCommentsData(articleData, users, commentData)), articleData, users, topics]);
     });
 };
 

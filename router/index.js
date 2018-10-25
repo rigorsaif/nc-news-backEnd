@@ -1,3 +1,6 @@
 module.exports = {
-  topicRouter: require("./topics")
+  topicRouter: require("./topics"),
+  articleRouter: require("./articles"),
+  commentRouter: require("./comments"),
+  userRouter: require("./users")
 };

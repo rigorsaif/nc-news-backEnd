@@ -2,9 +2,9 @@ const app = require("express")();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const apiRouter = require("./router/mainRouter");
-const { DB_URL} = require("./config/config");
+const { handle400s, handle404s, handle500s } = require("./errors/errors");
+const { DB_URL } = require("./config/config");
 
-console.log(DB_URL);
 mongoose.connect(DB_URL).then(() => {
   console.log(`connected to database ${DB_URL}`);
 });
@@ -12,11 +12,11 @@ app.use(bodyParser.json());
 app.use("/api", apiRouter);
 
 app.use("/*", (req, res, next) => {
-  next({ err: 404 });
+  next({ status: 404, msg: "not found"});
 });
 
-app.use((err, req, res, next) => {
-  console.log(err, "this is server Error");
-});
+app.use(handle400s);
+app.use(handle404s);
+app.use(handle500s);
 
 module.exports = app;
