@@ -13,11 +13,11 @@ describe("/api", () => {
       [commentDocs, articleDocs, userDocs, topicDocs] = dataDocs;
     });
   });
-  afterEach(() => {
-    return mongoose.disconnect();
-  });
+  // afterEach(() => {
+  //   return mongoose.disconnect();
+  // });
 
-  describe("/topic", () => {
+  xdescribe("/topic", () => {
     it("should return status 200 and all topics", () => {
       return request
         .get("/api/topics")
@@ -29,26 +29,60 @@ describe("/api", () => {
         });
     });
 
-    it("should return status 200 and all topics", () => {
+    it("should return status 200 and all articles by slug", () => {
       return request
-        .get("/api/topics")
+        .get("/api/topics/cats/articles")
         .expect(200)
         .then(res => {
-          expect(res.body.topics).to.be.an("array");
-          expect(res.body.topics.length).to.equal(topicDocs.length);
-          expect(res.body.topics[0]._id).to.eql(`${topicDocs[0]._id}`);
+          expect(res.body.articles).to.be.an("array");
+          expect(res.body.articles.length).to.equal(
+            articleDocs.filter(a => a.belongs_to === "cats").length
+          );
+          expect(res.body.articles[0]._id).to.eql(
+            `${articleDocs.filter(a => a.belongs_to === "cats")[0]._id}`
+          );
+        });
+    });
+    it("should return status 201 and the posted article", () => {
+      return request
+        .post("/api/topics/cats/articles")
+        .send({
+          title: "new article",
+          body: "This is my new article content",
+          created_by: "5bd21b3d73718ddeca317afd",
+          belongs_to: "cats"
+        })
+        .expect(201)
+        .then(res => {
+          expect(res.body.article).to.be.an("object");
+          expect(res.body.article.created_by).to.equal(
+            "5bd21b3d73718ddeca317afd"
+          );
+          expect(res.body.article).to.have.property("_id");
         });
     });
   });
-  xdescribe("/articles", () => {
-    it("should return status 200 and all topics", () => {
+  describe("/articles", () => {
+    it("should return status 200 and all articles", () => {
       return request
         .get("/api/articles")
         .expect(200)
         .then(res => {
-          expect(res.body.topics).to.be.an("array");
-          expect(res.body.topics.length).to.equal(topicDocs.length);
-          expect(res.body.topics[0]._id).to.eql(`${topicDocs[0]._id}`);
+          expect(res.body.articles).to.be.an("array");
+          expect(res.body.articles.length).to.equal(articleDocs.length);
+          expect(res.body.articles[0]._id).to.eql(`${articleDocs[0]._id}`);
+        });
+    });
+
+    it("should return status 200 and an article", () => {
+      return request
+        .get("/api/articles/5bd22357d473ddea59b0eea7")
+        .expect(200)
+        .then(res => {
+          console.log(res.body);
+          expect(res.body.article).to.be.an("array");
+          // expect(res.body.articles.length).to.equal(articleDocs.length);
+          // expect(res.body.articles[0]._id).to.eql(`${articleDocs[0]._id}`);
         });
     });
   });

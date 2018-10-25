@@ -8,15 +8,15 @@ exports.getAllArticlesBySlug = (req, res, next) => {
   Topic.find(req.params)
     .then(data => {
       Article.find({ belongs_to: data[0].slug }).then(articles =>
-        res.status(200).send(articles)
+        res.status(200).send({ articles })
       );
     })
     .catch(next);
 };
 exports.postArticleBySlug = (req, res, next) => {
   Article.create(req.body)
-    .then(newArticle => {
-      res.status(201).send(newArticle);
+    .then(article => {
+      res.status(201).send({article});
     })
     .catch(next);
 };
@@ -24,8 +24,8 @@ exports.postArticleBySlug = (req, res, next) => {
 // articles route
 exports.getAllArticles = (req, res, next) => {
   Article.find()
-    .then(data => {
-      res.status(200).send(data);
+    .then(articles => {
+      res.status(200).send({articles});
     })
     .catch(next);
 };
