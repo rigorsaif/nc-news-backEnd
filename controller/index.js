@@ -1,7 +1,7 @@
 const { User, Article, Comment, Topic } = require("../models/index");
 exports.getAllTopics = (req, res, next) => {
   Topic.find()
-    .then(topics => res.status(200).render("index.ejs",{ topics }))
+    .then(topics => res.status(200).send({ topics }))
     .catch(next);
 };
 exports.getAllArticlesBySlug = (req, res, next) => {
