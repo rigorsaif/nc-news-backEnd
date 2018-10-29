@@ -1,6 +1,6 @@
 ## Northcoders news
 
-This is a project to build a functional api for the news of Northcoders. the project in this phase just focuses on the back end development. making sure that the application is very functional and without any bug.
+This is a project to build a functional api for the news of Northcoders. the project in this phase just focuses on the back end development. making sure that the application is very functional and without any bugs.
 
 ### Getting Started
 
@@ -62,4 +62,4 @@ D - your DB_URL should take this format for your development "mongodb://localhos
 
 - Mitch
 - the coffee machine in the kitchen
-- maybe Paul not sure yet
+- maybe Paul but not sure yet
