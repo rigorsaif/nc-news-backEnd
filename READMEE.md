@@ -33,7 +33,7 @@ The below are some of the model methods that you can call on your models.
 A - make a config file inside a config folder. make sure the config folder in the same directory as the app file.
 B - set the variable environment. you can use process.env.NODE_ENV || "development".
 C - your DB_URL should be different for both development and testing.
-D - your DB_URL should take this format for your development "mongodb://localhost:27017/Database-name", and "mongodb://localhost:27017/nc_news_testing" for testing.
+D - your DB_URL should take this format for your development "mongodb://localhost:27017/Database-name", and "mongodb://localhost:27017/Database_Name_testing" for testing.
 
 ### the dependencies the app uses (use npm i to install them):
 

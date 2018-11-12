@@ -26,6 +26,7 @@ describe("/api", () => {
           expect(res.body.topics).to.be.an("array");
           expect(res.body.topics.length).to.equal(topicDocs.length);
           expect(res.body.topics[0]._id).to.eql(`${topicDocs[0]._id}`);
+          //test that it have all keys 
         });
     });
     it("should return status 404 and error message", () => {
@@ -36,12 +37,13 @@ describe("/api", () => {
           expect(res.body.msg).to.equal("not found");
         });
     });
-
+      topicDocs
     it("should return status 200 and all articles by slug", () => {
       return request
         .get("/api/topics/cats/articles")
         .expect(200)
         .then(res => {
+          console.log(res.body)
           expect(res.body.articles).to.be.an("array");
           expect(res.body.articles.length).to.equal(
             articleDocs.filter(a => a.belongs_to === "cats").length
@@ -52,11 +54,12 @@ describe("/api", () => {
         });
     });
 
-    it("should return status 500 and", () => {
+    it("should return status 404 and and topic not found", () => {
       return request
         .get("/api/topics/cts/articles")
-        .expect(500)
+        .expect(404)
         .then(res => {
+          expect(res.text).to.equal('{"msg":"Topic does not exist!"}');
         });
     });
 
@@ -66,8 +69,8 @@ describe("/api", () => {
         .send({
           title: "new article",
           body: "This is my new article content",
-          created_by: "5bd21b3d73718ddeca317afd",
-          belongs_to: "cats"
+          created_by: "Grab the new id from usersdocs",
+          belongs_to: "grab that from the params"
         })
         .expect(201)
         .then(res => {
@@ -170,7 +173,7 @@ describe("/api", () => {
     });
   });
 
-  describe("/users", () => {
+  xdescribe("/users", () => {
     it("should return status 200 and a user by his username", () => {
       console.log(userDocs[0].username);
       return request
