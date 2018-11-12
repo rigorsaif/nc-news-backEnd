@@ -17,15 +17,13 @@ exports.getAllArticlesBySlug = (req, res, next) => {
     .then(data => {
       if (!data.length)
         return Promise.reject({ status: 404, msg: "Topic does not exist!" });
-      Article.find({
-        belongs_to: data[0].slug
-      })
+      Article.find({ belongs_to: data[0].slug })
         .lean()
-        .then(articles => {
-          return Promise.all([Comment.find(), articles]);
+        .then(articlesData => {
+          return Promise.all([Comment.find(), articlesData]);
         })
-        .then(([commentsDocs, articles]) => {
-          const articlesWithCommentCount = articles.map(article => {
+        .then(([commentsDocs, articlesData]) => {
+          const articles = articlesData.map(article => {
             const newArticle = {
               ...article,
               comment_count: getComments(
@@ -36,7 +34,7 @@ exports.getAllArticlesBySlug = (req, res, next) => {
             };
             return newArticle;
           });
-          res.send(articlesWithCommentCount);
+          res.send({ articles });
         });
     })
     .catch(next);
@@ -54,26 +52,33 @@ exports.getAllArticles = (req, res, next) => {
   Article.find()
     .populate("created_by")
     .lean()
-    .then(articles => {
-      return Promise.all([Comment.find(), articles]);
+    .then(articlesData => {
+      return Promise.all([Comment.find(), articlesData]);
     })
-    .then(([commentsDocs, articles]) => {
-      const articlesWithCommentCount = articles.map(article => {
+    .then(([commentsDocs, articlesData]) => {
+      const articles = articlesData.map(article => {
         const newArticle = {
           ...article,
           comment_count: getComments(commentsDocs, "belongs_to", article._id)
         };
         return newArticle;
       });
-      res.send(articlesWithCommentCount);
+      res.send({ articles });
     })
     .catch(next);
 };
 exports.getArticleById = (req, res, next) => {
-  const id = req.params._id
+  const id = req.params._id;
   Article.findById(id)
-    .then(article => {
-      res.status(200).send({ article });
+    .lean()
+    .then(articleData => {
+      return Promise.all([
+        Comment.find({ belongs_to: articleData._id }),
+        articleData
+      ]).then(([comments, articleData]) => {
+        const article = { ...articleData, comment_count: comments.length };
+        res.status(200).send({ article });
+      });
     })
     .catch(next);
 };
@@ -93,8 +98,8 @@ exports.postCommentByArticle = (req, res, next) => {
   Comment.create(req.body)
     .populate("belongs_to")
     .populate("created_by")
-    .then(newComment => {
-      res.status(201).send(newComment);
+    .then(comment => {
+      res.status(201).send({comment});
     })
     .catch(next);
 };
