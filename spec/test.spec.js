@@ -17,7 +17,7 @@ describe("/api", () => {
     return mongoose.disconnect();
   });
 
-  describe("/topic", () => {
+  xdescribe("/topic", () => {
     it("should return status 200 and all topics", () => {
       return request
         .get("/api/topics")
@@ -26,7 +26,7 @@ describe("/api", () => {
           expect(res.body.topics).to.be.an("array");
           expect(res.body.topics.length).to.equal(topicDocs.length);
           expect(res.body.topics[0]._id).to.eql(`${topicDocs[0]._id}`);
-          //test that it have all keys 
+          //test that it have all keys
         });
     });
     it("should return status 404 and error message", () => {
@@ -37,13 +37,12 @@ describe("/api", () => {
           expect(res.body.msg).to.equal("not found");
         });
     });
-      topicDocs
+    topicDocs;
     it("should return status 200 and all articles by slug", () => {
       return request
         .get("/api/topics/cats/articles")
         .expect(200)
         .then(res => {
-          console.log(res.body)
           expect(res.body.articles).to.be.an("array");
           expect(res.body.articles.length).to.equal(
             articleDocs.filter(a => a.belongs_to === "cats").length
@@ -65,24 +64,21 @@ describe("/api", () => {
 
     it("should return status 201 and the posted article", () => {
       return request
-        .post("/api/topics/cats/articles")
+        .post(`/api/topics/${topicDocs[0].slug}/articles`)
         .send({
           title: "new article",
           body: "This is my new article content",
-          created_by: "Grab the new id from usersdocs",
-          belongs_to: "grab that from the params"
+          created_by: userDocs[0]._id,
+          belongs_to: topicDocs[0].slug
         })
         .expect(201)
         .then(res => {
           expect(res.body.article).to.be.an("object");
-          expect(res.body.article.created_by).to.equal(
-            "5bd21b3d73718ddeca317afd"
-          );
+          expect(res.body.article.created_by).to.equal(String(userDocs[0]._id));
           expect(res.body.article).to.have.property("_id");
         });
     });
   });
-
 
   it("should return status 400 and bad request when posting invalid data", () => {
     return request
@@ -94,9 +90,7 @@ describe("/api", () => {
         belongs_to: "cats"
       })
       .expect(400)
-      .then(res => {
-    
-      });
+      .then(res => {});
   });
   xdescribe("/articles", () => {
     it("should return status 200 and all articles", () => {
@@ -115,9 +109,9 @@ describe("/api", () => {
         .get(`/api/articles/${articleDocs[0]._id}`)
         .expect(200)
         .then(res => {
-          expect(res.body.article).to.be.an("array");
-          expect(res.body.article[0]._id).to.equal(`${articleDocs[0]._id}`);
-          expect(res.body.article[0].body).to.equal(`${articleDocs[0].body}`);
+          expect(res.body.article).to.be.an("object");
+          expect(res.body.article._id).to.equal(`${articleDocs[0]._id}`);
+          expect(res.body.article.body).to.equal(`${articleDocs[0].body}`);
         });
     });
 
@@ -166,14 +160,15 @@ describe("/api", () => {
     it("should return status 200 and an comment deleted", () => {
       return request
         .delete(`/api/comments/${commentDocs[0]._id}`)
-        .expect(200)
+        .expect(204)
         .then(res => {
+          console.log(res.statusMessage)
           expect(res.text).to.equal("deleted");
         });
     });
   });
 
-  xdescribe("/users", () => {
+  describe("/users", () => {
     it("should return status 200 and a user by his username", () => {
       console.log(userDocs[0].username);
       return request
