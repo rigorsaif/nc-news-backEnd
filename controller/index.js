@@ -18,6 +18,7 @@ exports.getAllArticlesBySlug = (req, res, next) => {
       if (!data.length)
         return Promise.reject({ status: 404, msg: "Topic does not exist!" });
       Article.find({ belongs_to: data[0].slug })
+        .populate("created_by")
         .lean()
         .then(articlesData => {
           return Promise.all([Comment.find(), articlesData]);
@@ -99,7 +100,7 @@ exports.postCommentByArticle = (req, res, next) => {
     .populate("belongs_to")
     .populate("created_by")
     .then(comment => {
-      res.status(201).send({comment});
+      res.status(201).send({ comment });
     })
     .catch(next);
 };
