@@ -71,6 +71,7 @@ exports.getAllArticles = (req, res, next) => {
 exports.getArticleById = (req, res, next) => {
   const id = req.params._id;
   Article.findById(id)
+    .populate("created_by")
     .lean()
     .then(articleData => {
       return Promise.all([
