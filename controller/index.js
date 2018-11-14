@@ -96,10 +96,7 @@ exports.getCommentsByArticleId = (req, res, next) => {
 
 // comments route
 exports.postCommentByArticle = (req, res, next) => {
-  //console.log(req.body)
   Comment.create(req.body)
-    .populate("belongs_to")
-    .populate("created_by")
     .then(comment => {
       res.status(201).send({ comment });
     })
