@@ -167,6 +167,10 @@ exports.voteUpComments = (req, res, next) => {
 
 exports.getUsersByUsername = (req, res, next) => {
   User.find(req.params)
-    .then(user => res.status(200).send({ user }))
+    .then(user => {
+      if (user.length === 0)
+        return Promise.reject({ status: 404, msg: "User does not exist!" });
+     else res.status(200).send({ user });
+    })
     .catch(next);
 };
