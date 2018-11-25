@@ -165,12 +165,17 @@ exports.voteUpComments = (req, res, next) => {
   }
 };
 
+exports.getAllUsers = (req, res, next) => {
+  User.find()
+    .then(users => res.status(200).send({ users }))
+    .catch(next);
+};
 exports.getUsersByUsername = (req, res, next) => {
   User.find(req.params)
     .then(user => {
       if (user.length === 0)
         return Promise.reject({ status: 404, msg: "User does not exist!" });
-     else res.status(200).send({ user });
+      else res.status(200).send({ user });
     })
     .catch(next);
 };
