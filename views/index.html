@@ -25,6 +25,8 @@
     article", "body": "This is my new article content", "created_by": "user_id goes here"}`</h5>
     <h2>GET /api/articles</h2>
     <h5>Get an individual article</h5>
+    <h2>GET /api/articles/users/:_id</h2>
+    <h5>Get article by user id</h5>
     <h2>GET /api/articles/:article_id/comments</h2>
     <h5>Get all the comments for a individual article</h5>
     <h2>POST /api/articles/:article_id/comments</h2>
@@ -36,7 +38,11 @@
     <h5>Increment or Decrement the votes of a comment by one. This route requires a vote query of 'up' or 'down' e.g: `/api/comments/:comment_id?vote=down`</h5>
     <h2>DELETE /api/comments/:comment_id</h2>
     <h5> Deletes a comment</h5>
+    <h2>GET /api/comments/users/:_id</h2>
+    <h5>Get comments by user id</h5>
     <h2>GET /api/users/:username</h2>
+     h2>GET /api/users/</h2>
+    <h5>Get all users</h5>
     <h5>e.g: `/api/users/mitch125` # Returns a JSON object with the profile data for the specified user.</h5>
   </section>
 </body>
