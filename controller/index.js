@@ -85,12 +85,19 @@ exports.getArticleById = (req, res, next) => {
     .catch(next);
 };
 exports.getArticleByUserId = (req, res, next) => {
-  Article.find({ created_by: req.params._id}).then(articles => res.status(200).send({articles})).catch(next)
-}
+  Article.find({ created_by: req.params._id })
+    .populate("created_by")
+    .then(articles => res.status(200).send({ articles }))
+    .catch(next);
+};
 
 exports.getCommentsByUserId = (req, res, next) => {
-  Comment.find({ created_by: req.params._id }).then(comments => res.status(200).send({ comments })).catch(next)
-}
+  Comment.find({ created_by: req.params._id })
+    .populate("belongs_to")
+    .populate("created_by")
+    .then(comments => res.status(200).send({ comments }))
+    .catch(next);
+};
 exports.getCommentsByArticleId = (req, res, next) => {
   Comment.find({ belongs_to: req.params._id })
     .populate("belongs_to")
