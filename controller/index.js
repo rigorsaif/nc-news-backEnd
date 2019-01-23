@@ -8,7 +8,7 @@ function getComments(commentDocs, property, id) {
 }
 
 exports.getAllTopics = (req, res, next) => {
-  logger.debug("topics called")
+  logger.info("topics called")
   Topic.find()
     .then(topics => res.status(200).send({ topics }))
     .catch(next);

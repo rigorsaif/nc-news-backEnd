@@ -3,7 +3,7 @@ const { format, createLogger, transports } = require("winston");
 const options = {
   file: {
     level: "info",
-    filename: `${__dirname}/logs/app.log`,
+    filename: `${__dirname}/../logs/app.log`,
     handleExceptions: true,
     json: true,
     maxsize: 5242880, // 5MB
@@ -18,10 +18,13 @@ const options = {
   }
 };
 
-module.exports = createLogger({
+const logger = createLogger({
   transports: [
     new transports.Console(options.console),
     new transports.File(options.file)
   ],
   exitOnError: false
 });
+
+
+module.exports = logger
