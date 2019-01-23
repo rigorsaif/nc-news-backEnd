@@ -1,4 +1,5 @@
 const { User, Article, Comment, Topic } = require("../models/index");
+const logger = require("../utils/logger")
 
 function getComments(commentDocs, property, id) {
   return commentDocs.filter(doc => {
@@ -7,6 +8,7 @@ function getComments(commentDocs, property, id) {
 }
 
 exports.getAllTopics = (req, res, next) => {
+  logger.debug("topics called")
   Topic.find()
     .then(topics => res.status(200).send({ topics }))
     .catch(next);
