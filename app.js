@@ -12,7 +12,7 @@ mongoose.connect(DB_URL).then(() => {
   console.log(`connected to database ${DB_URL}`);
 });
 app.get("/", (req, res, next) => {
-  res.sendfile(`${__dirname}/views/index.html`);
+  res.sendFile(`${__dirname}/views/index.html`);
 });
 
 app.use(function(req, res, next) {
