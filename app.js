@@ -10,17 +10,8 @@ const { DB_URL } =
     : require("./config/config");
 
   // process is event emitter & on method is used to subscribe to an event
-process.on("uncaughtException", ex => {
-  logger.error(ex.message);
-
-}); 
-
-process.on("unhandledRejection", ex => {
-  logger.error(ex.message);
-
-});
 mongoose.connect(DB_URL).then(() => {
-  console.log(`connected to database ${DB_URL}`);
+  logger.info(`connected to database ${DB_URL}`);
 });
 app.get("/", (req, res, next) => {
   res.sendFile(`${__dirname}/views/index.html`);

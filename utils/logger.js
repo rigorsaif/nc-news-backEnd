@@ -44,4 +44,14 @@ const logger = createLogger({
   exitOnError: false
 });
 
+process.on("uncaughtException", ex => {
+  logger.error(ex.message);
+
+});
+
+process.on("unhandledRejection", ex => {
+  logger.error(ex.message);
+
+});
+
 module.exports = logger;
