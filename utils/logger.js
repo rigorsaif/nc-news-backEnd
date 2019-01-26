@@ -1,9 +1,18 @@
 const { format, createLogger, transports } = require("winston");
 
 const options = {
-  file: {
-    level: "info",
-    filename: `${__dirname}/../logs/app.log`,
+  error: {
+    level: "error",
+    filename: `${__dirname}/../logs/appErrors.log`,
+    handleExceptions: true,
+    json: true,
+    maxsize: 5242880, // 5MB
+    maxFiles: 5,
+    colorize: false
+  },
+  debug: {
+    level: "debug",
+    filename: `${__dirname}/../logs/appDebug.log`,
     handleExceptions: true,
     json: true,
     maxsize: 5242880, // 5MB
@@ -21,7 +30,8 @@ const options = {
 const logger = createLogger({
   transports: [
     new transports.Console(options.console),
-    new transports.File(options.file)
+    new transports.File(options.error),
+    new transports.File(options.debug)
   ],
   exitOnError: false
 });
