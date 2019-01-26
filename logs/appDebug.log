@@ -35,3 +35,6 @@ ReferenceError: winston is not defined
     at bootstrap_node.js:612:3
 [2019-01-26T15:01:44.398Z] Level: error, Message: winston is not defined
 [2019-01-26T15:01:53.199Z] Level: info, Message: listening on port 9090
+[2019-01-26T15:28:05.340Z] Level: info, Message: listening on port 9090
+[2019-01-26T15:28:05.414Z] Level: info, Message: connected to database mongodb://localhost:27017/nc_news
+[2019-01-26T15:28:25.365Z] Level: error, Message: url:/api/topic, errStatus:404, not found

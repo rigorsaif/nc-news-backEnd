@@ -1,5 +1,6 @@
 const { format, createLogger, transports } = require("winston");
 
+
 const options = {
   error: {
     level: "error",
@@ -27,6 +28,8 @@ const options = {
   }
 };
 
+const level = process.env.NODE_ENV === "production"? options.level: options.debug
+
 const logger = createLogger({
   format: format.combine(
     format.simple(),
@@ -36,13 +39,15 @@ const logger = createLogger({
         `[${log.timestamp}] Level: ${log.level}, Message: ${log.message}`
     )
   ),
-  transports: [
-    new transports.Console(options.console),
-    new transports.File(options.error),
-    new transports.File(options.debug)
-  ],
+  // transports: [
+  //   new transports.Console(options.console),
+  //   new transports.File(options.error),
+  //   new transports.File(options.debug)
+  // ],
   exitOnError: false
 });
+
+logger.add(new transports.File(level))
 
 process.on("uncaughtException", ex => {
   logger.error(ex.message);
