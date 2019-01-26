@@ -4,3 +4,34 @@
 [2019-01-26T12:58:26.956Z] Level: error Message: not found
 [2019-01-26T12:59:15.574Z] Level: error, Message: not found
 [2019-01-26T13:43:57.313Z] Level: error, Message: url:/api/topic errStatus:404 not found
+[2019-01-26T14:44:22.801Z] Level: error, Message: here an exception
+[2019-01-26T14:48:31.201Z] Level: error, Message: something went wrong
+[2019-01-26T14:57:32.143Z] Level: error, Message: uncaughtException: something went wrong
+[2019-01-26T15:00:41.619Z] Level: error, Message: something went wrong
+[2019-01-26T15:01:40.608Z] Level: error, Message: uncaughtException: winston is not defined
+ReferenceError: winston is not defined
+    at Server.app.listen (/Users/RezkKhan/northcoders/backend_2/BE2-northcoders-news/listen.js:5:32)
+    at Object.onceWrapper (events.js:313:30)
+    at emitNone (events.js:106:13)
+    at Server.emit (events.js:208:7)
+    at emitListeningNT (net.js:1382:10)
+    at _combinedTickCallback (internal/process/next_tick.js:135:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:191:16)
+    at bootstrap_node.js:612:3
+[2019-01-26T15:01:40.612Z] Level: error, Message: winston is not defined
+[2019-01-26T15:01:44.394Z] Level: error, Message: uncaughtException: winston is not defined
+ReferenceError: winston is not defined
+    at Server.app.listen (/Users/RezkKhan/northcoders/backend_2/BE2-northcoders-news/listen.js:5:32)
+    at Object.onceWrapper (events.js:313:30)
+    at emitNone (events.js:106:13)
+    at Server.emit (events.js:208:7)
+    at emitListeningNT (net.js:1382:10)
+    at _combinedTickCallback (internal/process/next_tick.js:135:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:191:16)
+    at bootstrap_node.js:612:3
+[2019-01-26T15:01:44.398Z] Level: error, Message: winston is not defined
+[2019-01-26T15:01:53.199Z] Level: info, Message: listening on port 9090

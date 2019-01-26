@@ -1,5 +1,6 @@
 const app = require("express")();
 const mongoose = require("mongoose");
+const logger = require("./utils/logger");
 const bodyParser = require("body-parser");
 const apiRouter = require("./router/apiRouter");
 const { handle400s, handle404s, handle500s } = require("./errors/errors");
@@ -8,6 +9,16 @@ const { DB_URL } =
     ? process.env
     : require("./config/config");
 
+  // process is event emitter & on method is used to subscribe to an event
+process.on("uncaughtException", ex => {
+  logger.error(ex.message);
+
+}); 
+
+process.on("unhandledRejection", ex => {
+  logger.error(ex.message);
+
+});
 mongoose.connect(DB_URL).then(() => {
   console.log(`connected to database ${DB_URL}`);
 });
@@ -25,7 +36,6 @@ app.use(function(req, res, next) {
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization, Content-Length, X-Requested-With"
   );
-  // allow preflight
   if (req.method === "OPTIONS") {
     res.send(200);
   } else {
