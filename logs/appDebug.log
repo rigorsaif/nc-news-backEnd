@@ -1,2 +1,5 @@
 {"message":"not found","level":"error"}
 {"message":"topics called","level":"info"}
+[2019-01-26T12:57:42.703Z] Level: info Message: topics called
+[2019-01-26T12:58:26.956Z] Level: error Message: not found
+[2019-01-26T12:59:15.574Z] Level: error, Message: not found

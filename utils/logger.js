@@ -28,6 +28,14 @@ const options = {
 };
 
 const logger = createLogger({
+  format: format.combine(
+    format.simple(),
+    format.timestamp(),
+    format.printf(
+      log =>
+        `[${log.timestamp}] Level: ${log.level}, Message: ${log.message}`
+    )
+  ),
   transports: [
     new transports.Console(options.console),
     new transports.File(options.error),
@@ -36,5 +44,4 @@ const logger = createLogger({
   exitOnError: false
 });
 
-
-module.exports = logger
+module.exports = logger;
