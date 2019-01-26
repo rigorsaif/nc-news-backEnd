@@ -1,3 +1,4 @@
 {"message":"not found","level":"error"}
 [2019-01-26T12:58:26.956Z] Level: error Message: not found
 [2019-01-26T12:59:15.574Z] Level: error, Message: not found
+[2019-01-26T13:43:57.313Z] Level: error, Message: url:/api/topic errStatus:404 not found
