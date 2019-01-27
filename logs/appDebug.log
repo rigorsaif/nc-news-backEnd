@@ -43,3 +43,7 @@ ReferenceError: winston is not defined
 [2019-01-26T16:13:42.713Z] Level: debug, Message: request: /api/topics params: football, response: [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
 [2019-01-26T16:36:18.778Z] Level: info, Message: listening on port 9090
 [2019-01-26T16:36:18.802Z] Level: info, Message: connected to database mongodb://localhost:27017/nc_news
+{"message":"listening on port 9090","level":"info"}
+{"message":"connected to database mongodb://localhost:27017/nc_news","level":"info"}
+{"message":"url:/api/topic, errStatus:404, not found","level":"error"}
+{"message":"url:/api/topic, errStatus:404, not found","level":"error"}

@@ -1,5 +1,10 @@
 const { format, createLogger, transports } = require("winston");
-
+const {
+  AccessKeyID,
+  SecretAccessKey,
+  username
+} = require("../config/cloudWatchConfig");
+const CloudWatchTransport = require("winston-aws-cloudwatch");
 
 const options = {
   error: {
@@ -28,35 +33,48 @@ const options = {
   }
 };
 
-const level = process.env.NODE_ENV === "production"? options.level: options.debug
+const level =
+  process.env.NODE_ENV === "production" ? options.level : options.debug;
 
 const logger = createLogger({
-  format: format.combine(
-    format.simple(),
-    format.timestamp(),
-    format.printf(
-      log =>
-        `[${log.timestamp}] Level: ${log.level}, Message: ${log.message}`
+  transports: [
+    new CloudWatchTransport(
+      {
+        level: "debug",
+        logGroupName: "minia-news-logs", // REQUIRED
+        logStreamName: "ERR", // REQUIRED
+        createLogGroup: false,
+        createLogStream: true,
+        submissionInterval: 2000,
+        submissionRetryCount: 1,
+        batchSize: 20,
+        awsConfig: {
+          accessKeyId: AccessKeyID,
+          secretAccessKey: SecretAccessKey,
+          region: "eu-west-2"
+        },
+        formatLog: item =>
+          `${item.level}: ${item.message} ${JSON.stringify(item.meta)}`
+      },
+      err => console.log(err)
     )
-  ),
-  // transports: [
-  //   new transports.Console(options.console),
-  //   new transports.File(options.error),
-  //   new transports.File(options.debug)
-  // ],
-  exitOnError: false
+  ]
 });
 
-logger.add(new transports.File(level))
+//logger.add(new transports.File(level));
 
 process.on("uncaughtException", ex => {
   logger.error(ex.message);
-
 });
 
 process.on("unhandledRejection", ex => {
   logger.error(ex.message);
-
 });
+
+logger.stream = {
+  write: function(message, encoding) {
+    logger.debug(message);
+  }
+};
 
 module.exports = logger;
