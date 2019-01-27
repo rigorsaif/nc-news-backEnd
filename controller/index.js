@@ -52,6 +52,11 @@ exports.getAllArticlesBySlug = (req, res, next) => {
 exports.postArticleBySlug = (req, res, next) => {
   Article.create(req.body)
     .then(article => {
+      logger.debug(
+        `request: ${req.baseUrl} params: ${
+          req.params.slug
+        }, response: ${article}`
+      );
       res.status(201).send({ article });
     })
     .catch(next);
@@ -73,6 +78,7 @@ exports.getAllArticles = (req, res, next) => {
         };
         return newArticle;
       });
+      logger.debug(`request: ${req.baseUrl} response: ${articles}`);
       res.send({ articles });
     })
     .catch(next);
@@ -88,6 +94,11 @@ exports.getArticleById = (req, res, next) => {
         articleData
       ]).then(([comments, articleData]) => {
         const article = { ...articleData, comment_count: comments.length };
+        logger.debug(
+          `request: ${req.baseUrl}, params: ${
+          req.params._id 
+          }, response: ${article}`
+        );
         res.status(200).send({ article });
       });
     })
@@ -96,7 +107,9 @@ exports.getArticleById = (req, res, next) => {
 exports.getArticleByUserId = (req, res, next) => {
   Article.find({ created_by: req.params._id })
     .populate("created_by")
-    .then(articles => res.status(200).send({ articles }))
+    .then(articles => {
+      logger.debug(`request: ${req.baseUrl}, params: ${req.params._id}, response: ${articles}`);
+      res.status(200).send({ articles })})
     .catch(next);
 };
 
@@ -104,7 +117,9 @@ exports.getCommentsByUserId = (req, res, next) => {
   Comment.find({ created_by: req.params._id })
     .populate("belongs_to")
     .populate("created_by")
-    .then(comments => res.status(200).send({ comments }))
+    .then(comments =>{ 
+      logger.debug(`request: ${req.baseUrl}, params: ${req.params._id}, response: ${comments}`);
+      res.status(200).send({ comments })})
     .catch(next);
 };
 exports.getCommentsByArticleId = (req, res, next) => {
@@ -112,6 +127,7 @@ exports.getCommentsByArticleId = (req, res, next) => {
     .populate("belongs_to")
     .populate("created_by")
     .then(comments => {
+      logger.debug(`request: ${req.baseUrl}, params: ${req.params._id}, response: ${comments}`);
       res.status(200).send({ comments });
     })
     .catch(next);
@@ -121,6 +137,7 @@ exports.getCommentsByArticleId = (req, res, next) => {
 exports.postCommentByArticle = (req, res, next) => {
   Comment.create(req.body)
     .then(comment => {
+      logger.debug(`request: ${req.baseUrl}, params: ${req.params._id}, response: ${comment}`);
       res.status(201).send({ comment });
     })
     .catch(next);
@@ -131,6 +148,7 @@ exports.patchArticleVotes = (req, res, next) => {
     Article.findOneAndUpdate(req.params, { $inc: { votes: 1 } }, { new: true })
       .populate("created_by")
       .then(article => {
+        logger.debug(`request: ${req.baseUrl}, query: ${req.query.vote}, response: ${article}`);
         res.send({ article });
       })
       .catch(next);
@@ -138,6 +156,7 @@ exports.patchArticleVotes = (req, res, next) => {
     Article.findOneAndUpdate(req.params, { $inc: { votes: -1 } }, { new: true })
       .populate("created_by")
       .then(newArticle => {
+        logger.debug(`request: ${req.baseUrl}, query: ${req.query.vote}, response: ${article}`);
         res.send(newArticle);
       })
       .catch(next);
@@ -166,6 +185,7 @@ exports.voteUpComments = (req, res, next) => {
       .populate("belongs_to")
       .populate("created_by")
       .then(comment => {
+        logger.debug(`request: ${req.baseUrl}, query: ${req.query.vote}, response: ${comment}`);
         res.send({ comment });
       })
       .catch(next);
@@ -180,6 +200,7 @@ exports.voteUpComments = (req, res, next) => {
       .populate("belongs_to")
       .populate("created_by")
       .then(comment => {
+        logger.debug(`request: ${req.baseUrl}, query: ${req.query.vote}, response: ${comment}`);
         res.send({ comment });
       })
       .catch(next);
