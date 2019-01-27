@@ -5,7 +5,7 @@ This is a project to build a functional api for the news of Northcoders. the pro
 ### Getting Started
 
 please refer to this link for the Routs of the application.
-- [Postman Documentation for this API] (https://documenter.getpostman.com/view/6469751/RztfxCoZ)
+- [Postman Documentation for this API](https://documenter.getpostman.com/view/6469751/RztfxCoZ)
 - [API Routers](https://quiet-thicket-37970.herokuapp.com/)
 
 ### Mongoose Documentation
