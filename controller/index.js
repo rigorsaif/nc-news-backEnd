@@ -1,4 +1,5 @@
 const { User, Article, Comment, Topic } = require("../models/index");
+const logger = require("../utils/logger");
 
 function getComments(commentDocs, property, id) {
   return commentDocs.filter(doc => {
@@ -8,7 +9,10 @@ function getComments(commentDocs, property, id) {
 
 exports.getAllTopics = (req, res, next) => {
   Topic.find()
-    .then(topics => res.status(200).send({ topics }))
+    .then(topics => {
+      logger.debug(`request: ${req.baseUrl}, response: ${topics}`);
+      res.status(200).send({ topics });
+    })
     .catch(next);
 };
 exports.getAllArticlesBySlug = (req, res, next) => {
@@ -35,6 +39,11 @@ exports.getAllArticlesBySlug = (req, res, next) => {
             };
             return newArticle;
           });
+          logger.debug(
+            `request: ${req.baseUrl} params: ${
+              req.params.slug
+            }, response: ${articles}`
+          );
           res.send({ articles });
         });
     })
