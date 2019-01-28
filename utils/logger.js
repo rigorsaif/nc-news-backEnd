@@ -1,4 +1,4 @@
-const { format, createLogger, transports } = require("winston");
+const {createLogger} = require("winston");
 const CloudWatchTransport = require("winston-aws-cloudwatch");
 const {
   logLevel,
@@ -17,8 +17,8 @@ const logger = createLogger({
     new CloudWatchTransport(
       {
         level: logLevel,
-        logGroupName: groupName, // REQUIRED
-        logStreamName: streamName, // REQUIRED
+        logGroupName: groupName, 
+        logStreamName: streamName, 
         createLogGroup: false,
         createLogStream: true,
         submissionInterval: 2000,

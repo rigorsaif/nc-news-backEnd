@@ -96,7 +96,7 @@ exports.getArticleById = (req, res, next) => {
         const article = { ...articleData, comment_count: comments.length };
         logger.debug(
           `request: ${req.baseUrl}, params: ${
-          req.params._id 
+            req.params._id
           }, response: ${article}`
         );
         res.status(200).send({ article });
@@ -108,8 +108,13 @@ exports.getArticleByUserId = (req, res, next) => {
   Article.find({ created_by: req.params._id })
     .populate("created_by")
     .then(articles => {
-      logger.debug(`request: ${req.baseUrl}, params: ${req.params._id}, response: ${articles}`);
-      res.status(200).send({ articles })})
+      logger.debug(
+        `request: ${req.baseUrl}, params: ${
+          req.params._id
+        }, response: ${articles}`
+      );
+      res.status(200).send({ articles });
+    })
     .catch(next);
 };
 
@@ -117,9 +122,14 @@ exports.getCommentsByUserId = (req, res, next) => {
   Comment.find({ created_by: req.params._id })
     .populate("belongs_to")
     .populate("created_by")
-    .then(comments =>{ 
-      logger.debug(`request: ${req.baseUrl}, params: ${req.params._id}, response: ${comments}`);
-      res.status(200).send({ comments })})
+    .then(comments => {
+      logger.debug(
+        `request: ${req.baseUrl}, params: ${
+          req.params._id
+        }, response: ${comments}`
+      );
+      res.status(200).send({ comments });
+    })
     .catch(next);
 };
 exports.getCommentsByArticleId = (req, res, next) => {
@@ -127,7 +137,11 @@ exports.getCommentsByArticleId = (req, res, next) => {
     .populate("belongs_to")
     .populate("created_by")
     .then(comments => {
-      logger.debug(`request: ${req.baseUrl}, params: ${req.params._id}, response: ${comments}`);
+      logger.debug(
+        `request: ${req.baseUrl}, params: ${
+          req.params._id
+        }, response: ${comments}`
+      );
       res.status(200).send({ comments });
     })
     .catch(next);
@@ -137,7 +151,11 @@ exports.getCommentsByArticleId = (req, res, next) => {
 exports.postCommentByArticle = (req, res, next) => {
   Comment.create(req.body)
     .then(comment => {
-      logger.debug(`request: ${req.baseUrl}, params: ${req.params._id}, response: ${comment}`);
+      logger.debug(
+        `request: ${req.baseUrl}, params: ${
+          req.params._id
+        }, response: ${comment}`
+      );
       res.status(201).send({ comment });
     })
     .catch(next);
@@ -148,7 +166,11 @@ exports.patchArticleVotes = (req, res, next) => {
     Article.findOneAndUpdate(req.params, { $inc: { votes: 1 } }, { new: true })
       .populate("created_by")
       .then(article => {
-        logger.debug(`request: ${req.baseUrl}, query: ${req.query.vote}, response: ${article}`);
+        logger.debug(
+          `request: ${req.baseUrl}, query: ${
+            req.query.vote
+          }, response: ${article}`
+        );
         res.send({ article });
       })
       .catch(next);
@@ -156,7 +178,11 @@ exports.patchArticleVotes = (req, res, next) => {
     Article.findOneAndUpdate(req.params, { $inc: { votes: -1 } }, { new: true })
       .populate("created_by")
       .then(newArticle => {
-        logger.debug(`request: ${req.baseUrl}, query: ${req.query.vote}, response: ${article}`);
+        logger.debug(
+          `request: ${req.baseUrl}, query: ${
+            req.query.vote
+          }, response: ${article}`
+        );
         res.send(newArticle);
       })
       .catch(next);
@@ -185,7 +211,11 @@ exports.voteUpComments = (req, res, next) => {
       .populate("belongs_to")
       .populate("created_by")
       .then(comment => {
-        logger.debug(`request: ${req.baseUrl}, query: ${req.query.vote}, response: ${comment}`);
+        logger.debug(
+          `request: ${req.baseUrl}, query: ${
+            req.query.vote
+          }, response: ${comment}`
+        );
         res.send({ comment });
       })
       .catch(next);
@@ -200,7 +230,11 @@ exports.voteUpComments = (req, res, next) => {
       .populate("belongs_to")
       .populate("created_by")
       .then(comment => {
-        logger.debug(`request: ${req.baseUrl}, query: ${req.query.vote}, response: ${comment}`);
+        logger.debug(
+          `request: ${req.baseUrl}, query: ${
+            req.query.vote
+          }, response: ${comment}`
+        );
         res.send({ comment });
       })
       .catch(next);
@@ -222,4 +256,17 @@ exports.getUsersByUsername = (req, res, next) => {
       else res.status(200).send({ user });
     })
     .catch(next);
+};
+
+exports.changeLogLevel = (req, res, next) => {
+  if (req.query.level === "debug") {
+    process.env.logLevel === "debug";
+    process.env.streamName === "minia-debugging";
+    res.send("switched to debugging")
+
+  } else if (req.query.level === "error") {
+    process.env.logLevel === "error";
+    process.env.streamName === "minia-errors";
+    res.send("switched to error");
+  }
 };
